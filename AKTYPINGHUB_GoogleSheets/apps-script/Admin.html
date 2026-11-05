@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AKTYPINGHUB | Staff Order Dashboard</title>
+  <style>
+    :root{--green:#073f35;--gold:#d5a93e;--bg:#f7f5ed}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#12332c;font:14px system-ui,-apple-system,Segoe UI,sans-serif}
+    header{background:var(--green);color:#fff;padding:22px max(18px,calc((100vw - 1100px)/2));}
+    h1{font-size:27px;margin:5px 0}header small{color:#ead58c;font-weight:700;letter-spacing:.15em}
+    main{max-width:1140px;margin:auto;padding:25px 17px} .panel{background:white;border:1px solid #dce5dc;border-radius:16px;padding:19px;margin-bottom:17px}
+    input{padding:12px;border:1px solid #b9c9c1;border-radius:10px;font:inherit;width:min(450px,100%)}button{padding:11px 14px;border:none;border-radius:10px;background:var(--green);color:#fff;cursor:pointer;font-weight:700}
+    button:disabled{opacity:.55;cursor:wait}.note{color:#63776b}#message{white-space:pre-wrap;margin:14px 0;color:#a6362b;font-weight:700}
+    .cards{display:grid;gap:13px}.order{background:white;border:1px solid #dce5dc;border-radius:15px;padding:17px}
+    .top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.ref{font-weight:900;font-size:16px;overflow-wrap:anywhere}
+    .small{font-size:12px;color:#667a70}.details{line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+    select{padding:10px;border-radius:8px;border:1px solid #cbd9d0;background:#fff}.status{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+    .controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center}a{color:#caa43c}
+  </style>
+</head>
+<body>
+<header><small>PRIVATE BUSINESS MANAGEMENT</small><h1>AKTYPINGHUB · Order Dashboard</h1><div>Orders are stored in your private Google Sheet.</div></header>
+<main>
+  <section class="panel"><label for="secret"><strong>Admin passphrase</strong></label><p class="note">Enter the private ADMIN_SECRET configured in Apps Script properties. Never share it with customers.</p>
+    <div class="controls"><input id="secret" type="password" autocomplete="off" placeholder="Enter private passphrase"><button id="load">Unlock & Load Orders</button><button id="refresh" disabled>Refresh</button></div>
+    <p id="message" role="status"></p>
+  </section>
+  <section id="orders" class="cards" aria-live="polite"></section>
+  <p class="note">Mark an order <strong>completed</strong> only after the work is finished. Completing a referred customer's first order activates the referrer's one-time 5% reward. Completed and cancelled orders cannot be reopened through this dashboard.</p>
+</main>
+<script>
+(function(){
+  const $=x=>document.getElementById(x);
+  const load=$('load'),refresh=$('refresh'),items=$('orders'),msg=$('message');
+  let adminSecret='';
+  function message(s){msg.textContent=s||'';}
+  function render(orders){
+    items.replaceChildren();
+    if(!orders.length){const p=document.createElement('p');p.textContent='No orders received yet.';items.append(p);return;}
+    orders.forEach(order=>{
+      const card=document.createElement('article');card.className='order';
+      const top=document.createElement('div');top.className='top';
+      const name=document.createElement('div');
+      const id=document.createElement('div');id.className='ref';id.textContent=order.id;
+      const detail=document.createElement('div');detail.className='small';detail.textContent=order.name+' · '+order.phone+' · '+order.timestamp;
+      name.append(id,detail);
+      const controls=document.createElement('div');controls.className='status';
+      const selection=document.createElement('select');selection.setAttribute('aria-label','Status for '+order.id);
+      ['received','quoted','in_progress','completed','cancelled'].forEach(s=>{const option=document.createElement('option');option.value=s;option.textContent=s.replaceAll('_',' ');option.selected=order.status===s;selection.append(option);});
+      const btn=document.createElement('button');btn.textContent='Save Status';
+      if(order.status==='completed'||order.status==='cancelled'){btn.disabled=true;selection.disabled=true;}
+      btn.addEventListener('click',()=>{
+        if(selection.value==='completed'&&!confirm('Confirm that the work is finished and apply any referral reward?'))return;
+        btn.disabled=true;message('Saving order status…');
+        google.script.run.withSuccessHandler(t=>{message(t);reload();}).withFailureHandler(e=>{message(e.message);btn.disabled=false;}).adminSetStatus(adminSecret,order.id,selection.value);
+      });
+      controls.append(selection,btn);top.append(name,controls);
+      const info=document.createElement('p');info.className='details';
+      info.textContent=order.service+' · '+order.copies+' copy/copies · Discount '+order.discount+'%'+(order.referral?' · Referral '+order.referral:'')+'\n'+(order.notes||'No additional instructions');
+      card.append(top,info);items.append(card);
+    });
+  }
+  function reload(){
+    if(!adminSecret)return;
+    load.disabled=true;refresh.disabled=true;message('Loading private orders…');
+    google.script.run.withSuccessHandler(orders=>{load.disabled=false;refresh.disabled=false;message('');render(orders);})
+      .withFailureHandler(e=>{load.disabled=false;refresh.disabled=true;message(e.message);items.replaceChildren();}).adminOrders(adminSecret);
+  }
+  load.addEventListener('click',()=>{adminSecret=$('secret').value;if(adminSecret.length<16){message('Enter your complete administrator passphrase.');return;}$('secret').value='';reload();});
+  refresh.addEventListener('click',reload);
+})();
+</script>
+</body>
+</html>

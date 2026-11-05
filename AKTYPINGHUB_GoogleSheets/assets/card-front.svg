@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="853" viewBox="0 0 1536 853">
+<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#062b24"/><stop offset="1" stop-color="#0b5849"/></linearGradient><linearGradient id="gold"><stop stop-color="#f9e8ad"/><stop offset=".45" stop-color="#d2a12d"/><stop offset="1" stop-color="#f7e5ab"/></linearGradient></defs>
+<rect width="1536" height="853" fill="url(#g)"/><circle cx="1310" cy="100" r="370" fill="none" stroke="#d6ab49" stroke-opacity=".1" stroke-width="70"/><circle cx="180" cy="840" r="325" fill="none" stroke="#f9e8ad" stroke-opacity=".08" stroke-width="90"/>
+<rect x="52" y="52" width="1432" height="749" rx="36" fill="none" stroke="url(#gold)" stroke-width="4"/>
+<g transform="translate(120 310)"><rect width="178" height="178" rx="39" fill="url(#gold)"/><path d="M34 54h110v78H34z" rx="5" fill="#073d34"/><path d="M44 40h90v35H44z" fill="#073d34"/><path d="M52 113h75v42H52z" fill="#f5edda"/><path d="M64 126h50M64 137h43" stroke="#0d5548" stroke-width="5"/></g>
+<text x="342" y="394" font-family="Arial,sans-serif" font-size="115" font-weight="800" letter-spacing="-6" fill="url(#gold)">AK</text><text x="515" y="394" font-family="Arial,sans-serif" font-size="115" font-weight="800" letter-spacing="-6" fill="#fffdf6">TYPING</text><text x="1074" y="394" font-family="Arial,sans-serif" font-size="115" font-weight="800" letter-spacing="-6" fill="url(#gold)">HUB</text>
+<text x="344" y="465" font-family="Arial,sans-serif" font-size="27" font-weight="600" letter-spacing="8" fill="#f1dab0">PRINT  •  TYPE  •  GET IT DONE</text>
+<path d="M342 508H1262" stroke="#cbac5c" stroke-opacity=".55" stroke-width="2"/>
+<text x="342" y="574" font-family="Arial,sans-serif" font-size="30" fill="#f7f3e8">Your Documents. Our Precision. Perfect Results.</text>
+<text x="115" y="733" font-family="Arial,sans-serif" font-size="24" fill="#e9d6a5">Jhansi  •  Printing  •  Typing  •  Photo Services</text>
+</svg>

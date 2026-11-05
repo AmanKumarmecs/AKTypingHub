@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AKTYPINGHUB | Staff Dashboard</title><meta name="robots" content="noindex,nofollow">
+<style>body{font:16px system-ui,Arial,sans-serif;background:#f7f4eb;color:#073f35;margin:0;padding:28px}.card{max-width:570px;margin:13vh auto;padding:30px;background:#fff;border-radius:22px;box-shadow:0 10px 40px #073f3522}.brand{color:#b58b20;letter-spacing:.12em;font-weight:900}h1{line-height:1.16}p{line-height:1.55}.btn{display:inline-block;margin-top:10px;background:#073f35;color:#fff;border-radius:12px;padding:14px 20px;text-decoration:none}small{display:block;color:#6b7870;margin-top:20px}</style>
+</head><body><main class="card"><div class="brand">AKTYPINGHUB</div><h1>Private Order Dashboard</h1><p>The protected admin dashboard runs inside Google Apps Script. Order information is not stored on this public GitHub Pages site.</p>
+<a id="dashboard" class="btn" href="#">Open Private Dashboard ↗</a>
+<small>Set your own Apps Script deployment URL in this page. The dashboard asks for your private admin passphrase.</small></main>
+<script>
+  const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyhHXNeg9JAHCMRv03MP7IljkQ5Fdtb7e_jaPS6O5aeNOK84bISU6AeoVBjGSGS6duILw/exec';
+  const link=document.getElementById('dashboard');
+  if(/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(APPS_SCRIPT_URL)){
+    link.href=APPS_SCRIPT_URL+'?view=admin';link.target='_blank';link.rel='noopener noreferrer';
+  }else{link.textContent='Dashboard not connected yet';link.addEventListener('click',e=>e.preventDefault());}
+</script></body></html>
